@@ -71,6 +71,12 @@ export const RoutesConfig: ApplicationRoute[] = [
     isAdmin: true,
   },
   {
+    path: "/admin/dashboard",
+    component: LazyLoadComponent(import("../pages/Admin/Dashboard/Dashboard")),
+    isProtected: true,
+    isAdmin: true,
+  },
+  {
     path: "/admin/course",
     component: LazyLoadComponent(import("../pages/Admin/Course/Courses")),
     isProtected: true,
@@ -80,7 +86,7 @@ export const RoutesConfig: ApplicationRoute[] = [
     path: "/admin/course/create",
     component: LazyLoadComponent(import("../pages/Admin/Course/CreateCourse")),
     isProtected: true,
-    isAdmin: false,
+    isAdmin: true,
   },
   {
     path: "/admin/course/details",
@@ -148,6 +154,16 @@ export const RoutesConfig: ApplicationRoute[] = [
     isProtected: true,
     isAdmin: true,
   },
+  {
+    path: "/admin/user",
+    component: LazyLoadComponent(
+      import("../pages/Admin/User/UsersManagement")
+    ),
+    isProtected: true,
+    isAdmin: true,
+  },
+
+
   {
     path: "/courses/",
     component: LazyLoadComponent(import("../pages/Client/Course/Course")),
@@ -273,7 +289,4 @@ export const RoutesConfig: ApplicationRoute[] = [
     isProtected: true,
     isAdmin: false,
   },
-
- 
-
 ];

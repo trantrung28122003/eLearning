@@ -76,27 +76,29 @@ const TrainingPartContent: React.FC<TrainingPartContentProps> = ({
   const toggleCommentBox = () => {
     setIsCommentBox(!isCommentBox);
   };
-  const handleSeeking = () => {
-    if (videoRef.current != null) {
-      const currentTime = videoRef.current.currentTime;
-      const duration = videoRef.current.duration;
-      setCurrentTime(currentTime);
-      const maxSkipTime = (duration * 30) / 100;
-      if (currentTime > maxSkipTime && actualWatchTime + 20 < currentTime) {
-        onWarningMessage(
-          "Bạn đã tua quá nhanh! Video sẽ quay lại vị trí trước đó."
-        );
-        videoRef.current.currentTime = previousTime;
-        videoRef.current.pause();
-      } else if (currentTime > previousTime) {
-        setSkipCount((prevCount) => prevCount + 1);
-        if (skipCount + 1 >= skipLimit) {
+  const handleSeeking = (trainingPartComplete: boolean) => {
+    if (!trainingPartComplete) {
+      if (videoRef.current != null) {
+        const currentTime = videoRef.current.currentTime;
+        const duration = videoRef.current.duration;
+        setCurrentTime(currentTime);
+        const maxSkipTime = (duration * 30) / 100;
+        if (currentTime > maxSkipTime && actualWatchTime + 20 < currentTime) {
           onWarningMessage(
-            "Bạn đang tua quá nhiều lần! Hãy xem video nghiêm túc."
+            "Bạn đã tua quá nhanh! Video sẽ quay lại vị trí trước đó."
           );
           videoRef.current.currentTime = previousTime;
           videoRef.current.pause();
-          setSkipCount(0);
+        } else if (currentTime > previousTime) {
+          setSkipCount((prevCount) => prevCount + 1);
+          if (skipCount + 1 >= skipLimit) {
+            onWarningMessage(
+              "Bạn đang tua quá nhiều lần! Hãy xem video nghiêm túc."
+            );
+            videoRef.current.currentTime = previousTime;
+            videoRef.current.pause();
+            setSkipCount(0);
+          }
         }
       }
     }
@@ -172,7 +174,7 @@ const TrainingPartContent: React.FC<TrainingPartContentProps> = ({
                 e.preventDefault();
                 return false;
               }}
-              onSeeking={handleSeeking}
+              onSeeking={() => handleSeeking(trainingPart.completed)}
             >
               <source src={trainingPart.videoUrl} type="video/mp4" />
               Trình duyệt của bạn không hỗ trợ phát video.

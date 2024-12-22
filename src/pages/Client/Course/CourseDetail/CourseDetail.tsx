@@ -3,6 +3,7 @@ import ClientShared from "../../Shared/ClientShared";
 import { useNavigate, useParams } from "react-router-dom";
 import { CourseSlim, TrainingPart } from "../../../../model/Course";
 import {
+  ADD_COURSE_FREE,
   ADD_TO_CART,
   ADD_TO_FEEDBACK,
   GET_COURSE_DETAIL,
@@ -46,6 +47,9 @@ const CourseDetail: React.FC = () => {
     useState<TrainingPart>();
   const [isLoading, setIsLoading] = useState(false);
   const [priceDiscount, setPriceDiscount] = useState<number | null>(null);
+  const [isFree, setIsFree] = useState(false);
+  const [isLoadingAddCart, setIsLoadingAddCart] = useState(false);
+  const [openEvents, setOpenEvents] = useState<{ [key: string]: boolean }>({});
   const fetchCourseDetail = async (courseId: string) => {
     setIsLoading(true);
     try {
@@ -88,31 +92,46 @@ const CourseDetail: React.FC = () => {
         setIsCourseFull(data.isCourseFull);
         setIsRegistrationDateExpired(data.isRegistrationDateExpired);
         setIsFavorited(data.isFavorited);
+        setIsFree(isFree);
       }
     } catch (error) {}
   };
 
-  const [openEvents, setOpenEvents] = useState<{ [key: string]: boolean }>({});
   const toggleEventDetails = (eventName: string) => {
     setOpenEvents((prev) => ({
       ...prev,
       [eventName]: !prev[eventName],
     }));
   };
-
+  const addCourseFree = async (courseId: string) => {
+    setIsLoadingAddCart(true);
+    try {
+      const URL = ADD_COURSE_FREE + `?courseId=${courseId}`;
+      const response = await DoCallAPIWithToken(URL, "GET");
+      if (response.status === HTTP_OK && response.data.code === 200) {
+        fetchCourseStatus(courseId);
+      }
+    } catch (error) {
+      console.error("Đã xảy ra lỗi", error);
+    } finally {
+      setIsLoadingAddCart(false);
+    }
+  };
   const addToCart = () => {
     if (!isLogin) {
       localStorage.clear();
       navigate("/login");
-    }
-    if (isPurchased) {
+    } else if (isFree && !isPurchased && courseId) {
+      addCourseFree(courseId);
+    } else if (isPurchased) {
       navigate("/userCourses");
     } else if (isInCart) {
       navigate("/shoppingCart");
     } else {
-      const URL = ADD_TO_CART + "/" + courseId;
+      const URL = ADD_TO_CART + `?courseId=${courseId}`;
       DoCallAPIWithToken(URL, "post").then((res) => {
-        if (res.status === HTTP_OK) {
+        if (res.data.code === HTTP_OK) {
+        } else if (res.data.code === 400) {
           navigate("/shoppingCart");
         }
       });
@@ -121,7 +140,6 @@ const CourseDetail: React.FC = () => {
   const handleStarClick = (value: any) => {
     setRating(value);
   };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!rating || !content.trim()) return alert("Vui lòng điền đủ thông tin!");
@@ -297,17 +315,23 @@ const CourseDetail: React.FC = () => {
                     }}
                     // disabled={isCourseFull || isRegistrationDateExpired}
                   >
-                    {isPurchased
-                      ? "Bắt Đầu Học Ngay"
-                      : isInCart
-                      ? "Đi Tới Giỏ Hàng"
-                      : isCourseFull && isRegistrationDateExpired
-                      ? "Ngày đăng ký khóa học đã hết hạn và đã đủ số lượng đăng kí"
-                      : isCourseFull
-                      ? "Khóa học đã đủ số lượng đăng kí"
-                      : isRegistrationDateExpired
-                      ? "Ngày đăng ký khóa học đã hết hạn"
-                      : "Tham Gia Ngay"}
+                    {isLoadingAddCart ? (
+                      <i className="fas fa-spinner fa-spin"></i>
+                    ) : (
+                      <>
+                        {isPurchased
+                          ? "Bắt Đầu Học Ngay"
+                          : isInCart
+                          ? "Đi Tới Giỏ Hàng"
+                          : isCourseFull && isRegistrationDateExpired
+                          ? "Ngày đăng ký khóa học đã hết hạn và đã đủ số lượng đăng kí"
+                          : isCourseFull
+                          ? "Khóa học đã đủ số lượng đăng kí"
+                          : isRegistrationDateExpired
+                          ? "Ngày đăng ký khóa học đã hết hạn"
+                          : "Tham Gia Ngay"}
+                      </>
+                    )}
                   </a>
                 </div>
 
@@ -571,6 +595,7 @@ const CourseDetail: React.FC = () => {
             </div>
           </div>
         </div>
+
         {showModalCoursePreview && course && selectTrainingPartPreview && (
           <CoursePreview
             course={course}

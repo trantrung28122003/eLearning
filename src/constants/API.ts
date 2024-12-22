@@ -1,5 +1,4 @@
 // const BASE_URL = "https://sd75skpq-8080.asse.devtunnels.ms";
-
 const BASE_URL = "http://localhost:8080";
 /* 
   authentication
@@ -13,6 +12,25 @@ const REGISTER_URL = BASE_URL_AUTH + "/register";
   authentication
 */
 
+/* 
+  Category
+*/
+const BASE_URL_CATEGORY = BASE_URL + "/category";
+const BASE_URL_CREATE_CATEGORY = BASE_URL_CATEGORY + "/create";
+const BASE_URL_UPDATE_CATEGORY = BASE_URL_CATEGORY + "/update";
+
+/* 
+  Category
+*/
+
+/* 
+  Event
+*/
+const BASE_URL_EVENT = BASE_URL + "/courseEvent";
+const BASE_URL_CREATE_EVENT = BASE_URL_EVENT + "/create";
+const BASE_URL_UPDATE_EVENT = BASE_URL_EVENT + "/update";
+
+/*
 
 /* 
   Course
@@ -29,6 +47,7 @@ const BASE_URL_CREATE_COURSE = BASE_URL_COURSE + "/create";
 /*
   user
 */
+
 const BASE_URL_USER = BASE_URL + "/users";
 const GET_USER_INFO_URL = BASE_URL_USER + "/myInfo";
 const BASE_URL_CUSTOMER = BASE_URL + "/customer";
@@ -162,4 +181,11 @@ export {
   ADD_COURSE_FREE,
   DO_PAYMENT_VNPAY,
   CONFIRM_PAYMENT_VNPAY,
+  BASE_URL_USER,
+  BASE_URL_EVENT,
+  BASE_URL_CREATE_CATEGORY,
+  BASE_URL_CATEGORY,
+  BASE_URL_UPDATE_CATEGORY,
+  BASE_URL_CREATE_EVENT,
+  BASE_URL_UPDATE_EVENT,
 };
