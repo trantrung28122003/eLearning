@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DoCallAPIWithToken } from "../../../services/HttpService";
-import { BASE_URL_CATEGORY, BASE_URL_CREATE_COURSE } from "../../../constants/API";
+import {
+  BASE_URL_CATEGORY,
+  BASE_URL_CREATE_COURSE,
+} from "../../../constants/API";
 import AdminShared from "../Shared/AdminShared";
 
 const CreateCourse: React.FC = () => {
@@ -28,10 +31,9 @@ const CreateCourse: React.FC = () => {
     isDeleted: false,
     categories: [] as string[],
   });
-  const formatDate = (isoDate: string) => {
-    return isoDate ? isoDate.split("T")[0] : "";
-  };
-
+  // const formatDate = (isoDate: string) => {
+  //   return isoDate ? isoDate.split("T")[0] : "";
+  // };
 
   const formatCurrentDate = () => {
     const now = new Date();
@@ -59,7 +61,11 @@ const CreateCourse: React.FC = () => {
   }, []);
   const toISODate = (date: string) => `${date}T00:00:00`;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -69,13 +75,15 @@ const CreateCourse: React.FC = () => {
 
   // Đối với phần nhập liệu là các `select` (ví dụ thể loại), cần xử lý như sau:
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCategoryIds = Array.from(e.target.selectedOptions, (option) => option.value);
+    const selectedCategoryIds = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
     setFormData((prevData) => ({
       ...prevData,
       categories: selectedCategoryIds,
     }));
   };
-
 
   const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -84,14 +92,14 @@ const CreateCourse: React.FC = () => {
     });
   };
 
-  const formatDateToLocalDateTime = (date: string) => {
-    const dateObject = new Date(date);
-    if (isNaN(dateObject.getTime())) {
-      alert("Ngày không hợp lệ");
-      return "";
-    }
-    return dateObject.toISOString();  // Chuyển thành chuỗi ISO 8601 đầy đủ, bao gồm giờ
-  };
+  // const formatDateToLocalDateTime = (date: string) => {
+  //   const dateObject = new Date(date);
+  //   if (isNaN(dateObject.getTime())) {
+  //     alert("Ngày không hợp lệ");
+  //     return "";
+  //   }
+  //   return dateObject.toISOString();  // Chuyển thành chuỗi ISO 8601 đầy đủ, bao gồm giờ
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,7 +120,6 @@ const CreateCourse: React.FC = () => {
       return;
     }
 
-
     // Kiểm tra giá khóa học hợp lệ
     const formattedPrice = formData.coursePrice.trim() || "0.0";
     if (isNaN(parseFloat(formattedPrice)) || parseFloat(formattedPrice) <= 0) {
@@ -122,7 +129,10 @@ const CreateCourse: React.FC = () => {
 
     // Kiểm tra số học viên tối đa hợp lệ
     const formattedMaxAttendees = formData.maxAttendees.trim() || "10";
-    if (isNaN(parseInt(formattedMaxAttendees)) || parseInt(formattedMaxAttendees) <= 0) {
+    if (
+      isNaN(parseInt(formattedMaxAttendees)) ||
+      parseInt(formattedMaxAttendees) <= 0
+    ) {
       alert("Số học viên tối đa phải là một số dương.");
       return;
     }
@@ -143,7 +153,10 @@ const CreateCourse: React.FC = () => {
     CourseRequest.append("courseContent", formData.courseContent);
     CourseRequest.append("startDate", toISODate(formData.startDate)); // Dùng toISODate
     CourseRequest.append("endDate", toISODate(formData.endDate)); // Dùng toISODate
-    CourseRequest.append("registrationDeadline", toISODate(formData.registrationDeadline)); // Dùng toISODate
+    CourseRequest.append(
+      "registrationDeadline",
+      toISODate(formData.registrationDeadline)
+    ); // Dùng toISODate
     CourseRequest.append("instructor", formData.instructor);
     CourseRequest.append("maxAttendees", formattedMaxAttendees);
     CourseRequest.append("imageUrl", formData.imageUrl);
@@ -173,7 +186,6 @@ const CreateCourse: React.FC = () => {
     // console.log("code request: " + formData.dateCreate);
     // console.log("code request: " + formData.registeredUsers);
 
-
     // Gửi yêu cầu API
     DoCallAPIWithToken(BASE_URL_CREATE_COURSE, "post", CourseRequest)
       .then((res) => {
@@ -192,8 +204,6 @@ const CreateCourse: React.FC = () => {
       });
   };
 
-
-
   const handleBack = () => {
     navigate("/admin/course");
   };
@@ -201,7 +211,14 @@ const CreateCourse: React.FC = () => {
   return (
     <AdminShared>
       <h1 className="text-center text-primary mb-5 pt-4">Thêm Khóa Học Mới</h1>
-      <div className="container bg-white p-5 rounded shadow" style={{ maxWidth: "1200px", margin: "0 auto", border: "1px solid #dee2e6" }}>
+      <div
+        className="container bg-white p-5 rounded shadow"
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          border: "1px solid #dee2e6",
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-md-6 mb-4">
@@ -364,7 +381,6 @@ const CreateCourse: React.FC = () => {
                 ))}
               </select>
             </div>
-
 
             {/* <div className="col-12 mb-4">
               <label className="form-label fw-bold">Khóa học đã xóa</label>

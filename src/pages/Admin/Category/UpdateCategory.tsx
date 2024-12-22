@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const CategoryList = () => {
   // Dữ liệu mẫu thể loại (có thể thay đổi theo nhu cầu ), (Chỉ có thể test tạm thời , không lưu được dữ liệu khi refresh)
   const [categories, setCategories] = useState([
-    { id: 1, categoryName: "Thể loại 1", dateCreate: "2024-01-01", dateChange: "2024-01-05" },
-    { id: 2, categoryName: "Thể loại 2", dateCreate: "2024-02-01", dateChange: "2024-02-05" },
-    { id: 3, categoryName: "Thể loại 3", dateCreate: "2024-03-01", dateChange: "2024-03-05" },
+    {
+      id: 1,
+      categoryName: "Thể loại 1",
+      dateCreate: "2024-01-01",
+      dateChange: "2024-01-05",
+    },
+    {
+      id: 2,
+      categoryName: "Thể loại 2",
+      dateCreate: "2024-02-01",
+      dateChange: "2024-02-05",
+    },
+    {
+      id: 3,
+      categoryName: "Thể loại 3",
+      dateCreate: "2024-03-01",
+      dateChange: "2024-03-05",
+    },
   ]);
 
-  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(
+    null
+  );
   const [newCategoryName, setNewCategoryName] = useState("");
-  const [message, setMessage] = useState("");
 
-  // Hàm để xử lý việc lưu thay đổi khi chỉnh sửa tên thể loại
   const handleUpdate = (id: number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) => {
@@ -36,7 +51,6 @@ const CategoryList = () => {
   const handleDelete = (id: number) => {
     if (window.confirm("Bạn có chắc muốn xóa thể loại này?")) {
       setCategories(categories.filter((category) => category.id !== id));
-      setMessage("Đã xóa thể loại thành công.");
     }
   };
 
@@ -102,7 +116,10 @@ const CategoryList = () => {
                       <i className="bi bi-pencil-square"></i>
                       Sửa
                     </button>
-                    <button className="btn btn-sm btn-danger me-2" onClick={() => handleDelete(category.id)}>
+                    <button
+                      className="btn btn-sm btn-danger me-2"
+                      onClick={() => handleDelete(category.id)}
+                    >
                       <i className="bi bi-trash"></i>
                       Xóa
                     </button>

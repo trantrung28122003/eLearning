@@ -46,12 +46,14 @@ const AdminShared: React.FC<AdminSharedProps> = ({ children }) => {
         {
           key: "16",
           label: "Sửa",
-          onClick: () => handleOnClick(["sub1"], ["16"], "/admin/course/update"),
+          onClick: () =>
+            handleOnClick(["sub1"], ["16"], "/admin/course/update"),
         },
         {
           key: "17",
           label: "Chi tiết",
-          onClick: () => handleOnClick(["sub1"], ["17"], "/admin/course/details"),
+          onClick: () =>
+            handleOnClick(["sub1"], ["17"], "/admin/course/details"),
         },
       ],
     },
@@ -73,7 +75,7 @@ const AdminShared: React.FC<AdminSharedProps> = ({ children }) => {
         },
       ],
     },
-    
+
     {
       key: "sub3",
       label: "Loại khóa học",
@@ -93,7 +95,7 @@ const AdminShared: React.FC<AdminSharedProps> = ({ children }) => {
         },
       ],
     },
-   {
+    {
       key: "sub4",
       label: "Người dùng",
       icon: <SettingOutlined />,

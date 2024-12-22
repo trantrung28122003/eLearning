@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Field, Formik } from "formik";
 import * as yup from "yup";
-import {
-  DoCallAPIWithOutToken,
-  DoCallAPIWithToken,
-} from "../../../services/HttpService";
+import { DoCallAPIWithOutToken } from "../../../services/HttpService";
 import {
   FORGOT_PASSWORD_URL,
   RESET_PASSWORD,
@@ -14,7 +11,6 @@ import { HTTP_OK } from "../../../constants/HTTPCode";
 import AuthenticationShared from "./Shared/AuthenticationShared";
 import "./test.css";
 import { useNavigate } from "react-router-dom";
-import DataLoader from "../../../components/lazyLoadComponent/DataLoader";
 
 interface VerifyCode {
   email: string;

@@ -1,4 +1,4 @@
-import { EventSlim } from "./Event";
+
 
 export interface User {
   id: string;

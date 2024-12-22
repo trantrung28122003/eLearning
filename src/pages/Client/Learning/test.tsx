@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "./Home.module.css";
+
 import ClientShared from "../Shared/ClientShared";
 
 import Cat1Img from "../../../assets/img/cat-1.jpg";
@@ -10,7 +10,6 @@ import { DoCallAPIWithOutToken } from "../../../services/HttpService";
 import { HTTP_OK } from "../../../constants/HTTPCode";
 import {
   GET_ALL_COURSE,
-  GET_COURSES_MOST_REGISTERED,
   GET_FEEDBACKS_WITH_FIVE_RATING,
   GET_TOP_FOUR_MOST_CATEGORY,
 } from "../../../constants/API";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ChangePasswordModal.css";
 import { useNavigate } from "react-router-dom";
 import { HTTP_OK } from "../../../../constants/HTTPCode";

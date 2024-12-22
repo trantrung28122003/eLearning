@@ -21,7 +21,6 @@ const Result: React.FC<ResultProps> = ({
   totalQuestions,
   answers,
   restartQuiz,
-  isComplete,
   savedScore,
 }) => {
   return (
